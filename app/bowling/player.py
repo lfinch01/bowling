@@ -1,6 +1,7 @@
 from app.bowling.frame_score_keeper import ScoringFrame
 from app.bowling.bowling_utils import BowlingUtils
 
+
 class Player:
 
     def __init__(self, name):
@@ -8,8 +9,6 @@ class Player:
         self.all_frames = {}
         self.current_score = 0
         self.current_round = 0
-        self.round_open = False
-        self.frame_open = False
 
     def play_frame(self):
         bu = BowlingUtils()
@@ -32,11 +31,17 @@ class Player:
         self.current_round += 1
 
     def manage_round(self):
+        """
+        Runs and manges the entire round for the player.
+        """
         print("Player {} is up to bowl!".format(self.name))
         self.play_frame()
         self.update_score()
 
     def update_score(self):
+        """
+        Calculates score from all complaete rouds
+        """
         number_of_rounds = self.current_round
         score = 0
         for i in range(0, number_of_rounds):

@@ -5,14 +5,15 @@ from app.bowling.player import Player
 from app.bowling.bowling_utils import BowlingUtils
 
 
-
 class DriverBowlingGame:
-    NUMBER_OF_ROUNDS = 10
 
     def __init__(self):
         self.players = []
 
     def play_game(self):
+        """
+        Starts and runs the full game
+        """
         self.get_welcome_screen()
         self.create_players()
         self.start_game()
@@ -21,7 +22,7 @@ class DriverBowlingGame:
         bu = BowlingUtils()
         player_count = bu.parse_int_input("Enter the number of players:")
         for i in range(0, int(player_count)):
-            name = bu.parse_input(input("Enter name for player {}. Leave blank to get random name:".format(i+1)))
+            name = bu.parse_input(input("Enter name for player {}. Leave blank to get random name:".format(i + 1)))
             if len(name) == 0:
                 name = self.get_random_name()
             print("Name for player {} = {}".format(i + 1, name))
@@ -29,6 +30,9 @@ class DriverBowlingGame:
 
     @staticmethod
     def get_random_name():
+        """
+        Gets random first and last names from the files
+        """
         path_first_names = Path.joinpath(Path(__file__).absolute().parents[1], 'resources/bowling_first_names.txt')
         first_names = []
         with open(path_first_names.absolute()) as ffn:
@@ -61,5 +65,6 @@ class DriverBowlingGame:
             print("")
 
 
-db = DriverBowlingGame()
-db.play_game()
+if __name__ == '__main__':
+    dbg = DriverBowlingGame()
+    dbg.play_game()
