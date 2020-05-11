@@ -19,14 +19,13 @@ class Player:
         self.all_frames[self.current_round] = sr
         if self.current_round == 9 and (sr.is_strike() or sr.is_spare()):
             sr_extra_one = ScoringFrame()
-            next_bowl = bu.parse_score_input("Pins knocked down on next bowl:", sr_extra_one)
-            sr_extra_one.add_bowl(next_bowl)
+            sr_extra_one.add_bowl(bu.parse_score_input("Pins knocked down on next bowl:", sr_extra_one.get_pins_downed()))
             self.all_frames[self.current_round + 1] = sr_extra_one
             if not sr_extra_one.is_strike():
-                sr_extra_one.add_bowl(bu.parse_score_input("Pins knocked down on next bowl:"), sr_extra_one)
+                sr_extra_one.add_bowl(bu.parse_score_input("Pins knocked down on next bowl:", sr_extra_one.get_pins_downed()))
             else:
                 sr_extra_extra_one = ScoringFrame()
-                sr_extra_extra_one.add_bowl(bu.parse_score_input("Pins knocked down on next bowl:"), sr_extra_extra_one)
+                sr_extra_extra_one.add_bowl(bu.parse_score_input("Pins knocked down on first bowl:", sr_extra_extra_one.get_pins_downed()))
                 self.all_frames[self.current_round + 2] = sr_extra_extra_one
         self.current_round += 1
 

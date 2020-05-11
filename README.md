@@ -12,17 +12,11 @@ as that's what the position.
 
 Project was written with Python 3.8 as the interpreter
 
-* There are no external dependencies (hence no requirements file). Can be run by simply creating an new venv
-* To run the program, execute the following command from a terminal in the root directory:
+* There are no dependencies (hence no requirements file). To get setup, just clone and create a new venv
+* To run the program, execute the following command from a terminal in the project root:
     python3 -m app.bowling.driver_bowling_game
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
+* Alternatively, can be run with an IDE by running the driver_bowling_game.py file located at app/bowling/driver_bowling_game.py
 
 ### Who do I talk to? ###
 
-* Repo owner or admin
-* Other community or team contact
+* Owned by Larry Finch. Please send any questions to lfinch.slc@gmail.com 

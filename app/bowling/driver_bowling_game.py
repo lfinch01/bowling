@@ -1,4 +1,3 @@
-from random import randint as ri
 from pathlib import Path
 from time import sleep
 from app.bowling.player import Player
@@ -17,6 +16,7 @@ class DriverBowlingGame:
         self.get_welcome_screen()
         self.create_players()
         self.start_game()
+        self.exit_screen()
 
     def create_players(self):
         bu = BowlingUtils()
@@ -24,28 +24,9 @@ class DriverBowlingGame:
         for i in range(0, int(player_count)):
             name = bu.parse_input(input("Enter name for player {}. Leave blank to get random name:".format(i + 1)))
             if len(name) == 0:
-                name = self.get_random_name()
+                name = bu.get_random_name()
             print("Name for player {} = {}".format(i + 1, name))
             self.players.append(Player(name))
-
-    @staticmethod
-    def get_random_name():
-        """
-        Gets random first and last names from the files
-        """
-        path_first_names = Path.joinpath(Path(__file__).absolute().parents[1], 'resources/bowling_first_names.txt')
-        first_names = []
-        with open(path_first_names.absolute()) as ffn:
-            for line in ffn:
-                first_names.append(str(line).replace("\n", ""))
-        path_last_names = Path.joinpath(Path(__file__).absolute().parents[1], 'resources/bowling_last_names.txt')
-        last_names = []
-        with open(path_last_names.absolute()) as fln:
-            for line in fln:
-                last_names.append(str(line).replace("\n", ""))
-        random_first = ri(0, len(first_names) - 1)
-        random_last = ri(0, len(last_names) - 1)
-        return "{} {}".format(first_names[random_first], last_names[random_last])
 
     @staticmethod
     def get_welcome_screen():
@@ -56,13 +37,30 @@ class DriverBowlingGame:
                 sleep(0.1)
 
     def start_game(self):
+        """
+        Runs the loop for the bowling portion of the game
+        :return:
+        """
         print("Now starting the game!!!")
+        print("")
         for i in range(0, 10):
             print("Round {} Begins".format(i + 1))
             for p in self.players:
                 p.manage_round()
                 print("Player {} now has a score of {}".format(p.name, p.current_score))
+                print("")
             print("")
+
+    def exit_screen(self):
+        max_score = -1
+        winning_player = ""
+        for p in self.players:
+            score = p.current_score
+            if score > max_score:
+                max_score = score
+                winning_player = p.name
+        print("Game Complete! Winner is {} with a score of {}".format(winning_player, max_score))
+        pass
 
 
 if __name__ == '__main__':

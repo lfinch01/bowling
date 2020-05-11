@@ -1,4 +1,6 @@
 import sys
+from pathlib import Path
+from random import randint as ri
 
 class BowlingUtils:
 
@@ -40,3 +42,22 @@ class BowlingUtils:
     def exit_game(self):
         print("Till next time!")
         sys.exit(0)
+
+    @staticmethod
+    def get_random_name():
+        """
+        Gets random first and last names from the files
+        """
+        path_first_names = Path.joinpath(Path(__file__).absolute().parents[1], 'resources/bowling_first_names.txt')
+        first_names = []
+        with open(path_first_names.absolute()) as ffn:
+            for line in ffn:
+                first_names.append(str(line).replace("\n", ""))
+        path_last_names = Path.joinpath(Path(__file__).absolute().parents[1], 'resources/bowling_last_names.txt')
+        last_names = []
+        with open(path_last_names.absolute()) as fln:
+            for line in fln:
+                last_names.append(str(line).replace("\n", ""))
+        random_first = ri(0, len(first_names) - 1)
+        random_last = ri(0, len(last_names) - 1)
+        return "{} {}".format(first_names[random_first], last_names[random_last])

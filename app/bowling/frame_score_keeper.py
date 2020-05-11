@@ -34,5 +34,5 @@ class ScoringFrame:
             self.bowls_taken = 1
 
     def get_pins_downed(self):
-        return self.first_pins_downed + self.second_pins_downed
+        return (self.first_pins_downed + self.second_pins_downed)
 
