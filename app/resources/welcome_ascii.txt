@@ -18,4 +18,3 @@ ___WELCOME_TO_FARGO_BOWL___
  \___/
 
 To quit at any time, enter -Q
-To see a score summary at any time, enter -S

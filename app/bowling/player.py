@@ -1,4 +1,5 @@
 from app.bowling.frame_score_keeper import ScoringFrame
+from app.bowling.bowling_utils import BowlingUtils
 
 class Player:
 
@@ -10,25 +11,29 @@ class Player:
         self.round_open = False
         self.frame_open = False
 
-    def record_score(self, pins_downed):
-        sr = ScoringFrame(pins_downed)
-        while(sr.has_next()):
-            next_bowl = int(input("Pins knocked down on next bowl:"))
-            sr.add_bowl(next_bowl)
+    def play_frame(self):
+        bu = BowlingUtils()
+        sr = ScoringFrame()
+        sr.add_bowl(bu.parse_score_input("Pins knocked down on first bowl:", sr.get_pins_downed()))
+        while sr.has_next():
+            sr.add_bowl(bu.parse_score_input("Pins knocked down on next bowl:", sr.get_pins_downed()))
         self.all_frames[self.current_round] = sr
         if self.current_round == 9 and (sr.is_strike() or sr.is_spare()):
-            next_bowl = int(input("Pins knocked down on next bowl:"))
-            sr_extra_one = ScoringFrame(next_bowl)
-            self.all_frames[self.current_round+1] = sr_extra_one
-        if self.current_round == 9 and sr.is_strike():
-            next_bowl = int(input("Pins knocked down on next bowl:"))
-            sr_extra_extra_one = ScoringFrame(next_bowl)
-            self.all_frames[self.current_round + 2] = sr_extra_extra_one
+            sr_extra_one = ScoringFrame()
+            next_bowl = bu.parse_score_input("Pins knocked down on next bowl:", sr_extra_one)
+            sr_extra_one.add_bowl(next_bowl)
+            self.all_frames[self.current_round + 1] = sr_extra_one
+            if not sr_extra_one.is_strike():
+                sr_extra_one.add_bowl(bu.parse_score_input("Pins knocked down on next bowl:"), sr_extra_one)
+            else:
+                sr_extra_extra_one = ScoringFrame()
+                sr_extra_extra_one.add_bowl(bu.parse_score_input("Pins knocked down on next bowl:"), sr_extra_extra_one)
+                self.all_frames[self.current_round + 2] = sr_extra_extra_one
         self.current_round += 1
 
-    def start_frame(self):
+    def manage_round(self):
         print("Player {} is up to bowl!".format(self.name))
-        self.record_score(int(input("Pins knocked down on first bowl:")))
+        self.play_frame()
         self.update_score()
 
     def update_score(self):
@@ -37,15 +42,12 @@ class Player:
         for i in range(0, number_of_rounds):
             frame = self.all_frames.get(i)
             score += frame.get_pins_downed()
-            next_round = self.all_frames.get(i+1)
-            next_next_round = self.all_frames.get(i+2)
+            next_round = self.all_frames.get(i + 1)
+            next_next_round = self.all_frames.get(i + 2)
             if next_round is not None and (frame.is_strike() or frame.is_spare()):
-                score += next_round.get_pins_downed()
-            if next_next_round is not None and frame.is_strike():
-                score += next_next_round.get_pins_downed()
+                score += next_round.first_pins_downed
+                if frame.is_strike() and not next_round.is_strike():
+                    score += next_round.second_pins_downed
+            if next_next_round is not None and (frame.is_strike() and next_round.is_strike()):
+                score += next_next_round.first_pins_downed
         self.current_score = score
-
-
-
-
-

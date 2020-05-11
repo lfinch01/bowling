@@ -1,17 +1,16 @@
-import os
-import sys
 from random import randint as ri
 from pathlib import Path
 from time import sleep
 from app.bowling.player import Player
+from app.bowling.bowling_utils import BowlingUtils
+
+
 
 class DriverBowlingGame:
-
     NUMBER_OF_ROUNDS = 10
 
     def __init__(self):
         self.players = []
-
 
     def play_game(self):
         self.get_welcome_screen()
@@ -19,12 +18,13 @@ class DriverBowlingGame:
         self.start_game()
 
     def create_players(self):
-        player_count = input("Enter the number of players:")
+        bu = BowlingUtils()
+        player_count = bu.parse_int_input("Enter the number of players:")
         for i in range(0, int(player_count)):
-            name = input("Enter name for player {}. Leave blank to get random name:".format(i+1))
+            name = bu.parse_input(input("Enter name for player {}. Leave blank to get random name:".format(i+1)))
             if len(name) == 0:
                 name = self.get_random_name()
-            print("Name for player {} = {}".format(i+1, name))
+            print("Name for player {} = {}".format(i + 1, name))
             self.players.append(Player(name))
 
     @staticmethod
@@ -54,12 +54,11 @@ class DriverBowlingGame:
     def start_game(self):
         print("Now starting the game!!!")
         for i in range(0, 10):
-            print("Round {} Begins".format(i+1))
+            print("Round {} Begins".format(i + 1))
             for p in self.players:
-                p.start_frame()
+                p.manage_round()
                 print("Player {} now has a score of {}".format(p.name, p.current_score))
             print("")
-
 
 
 db = DriverBowlingGame()
