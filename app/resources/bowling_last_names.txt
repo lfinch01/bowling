@@ -1,0 +1,12 @@
+Frame
+Lane
+Lanes
+Gutter
+Spare
+Strike
+300
+Rollers
+Splits
+Ball
+Balls
+Shoes

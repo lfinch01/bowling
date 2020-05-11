@@ -1,4 +1,4 @@
-____WELCOME_TO_BOWLING____
+___WELCOME_TO_FARGO_BOWL___
          _______
          |"""""|
          |iIiIi|
@@ -16,3 +16,6 @@ ____WELCOME_TO_BOWLING____
  /o o\
 |  o  |
  \___/
+
+To quit at any time, enter -Q
+To see a score summary at any time, enter -S
